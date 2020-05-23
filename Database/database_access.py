@@ -5,10 +5,6 @@ import json
 import sys
 
 def connectToDb():
-    server = 'tcp:knurehabilitation.database.windows.net,1433' 
-    database = 'HeadRotationClinic' 
-    username = 'master' 
-    password = '8juc68hnr5JhgbzMLOGf' 
     f = open(os.path.join(sys.path[0], "app.settings.json"), "r")
     appsettings = json.loads(f.read())
     connectionString = appsettings['ConnectionStrings']['azureSqlDb']
@@ -37,6 +33,14 @@ def getAllCustomers(cursor):
     cursor.execute("""
                     SELECT * 
                     FROM dbo.tblUsers 
+                    """
+                    )
+    return cursor.fetchone()
+
+def getAllStudies(cursor):
+    cursor.execute("""
+                    SELECT * 
+                    FROM dbo.tblStudies 
                     """
                     )
     return cursor.fetchone()
@@ -375,6 +379,6 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                     RollRightPainDegree, RollRightPainDescription, RollRightPainDynamics, RollRightTriggerSpots,
                     YawLeftRotationDynamics, YawRightRotationDynamics, RollLeftRotationDynamics,
                     RollRightRotationDynamics, PitchDownRotationDynamics, PitchUpRotationDynamics)
-    print(query)
+    #print(query)
     cursor.execute(query)  
     context.commit()   
