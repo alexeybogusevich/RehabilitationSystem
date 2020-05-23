@@ -317,13 +317,16 @@ def create_report(output_file, spacing = 1):
         pdf.cell(200, row_height*spacing, txt=exam[i][0], border=1)
         pdf.ln(row_height*spacing)
 
-    for i in range(36, 44):      
-        pdf.cell(80, row_height*spacing, txt=exam[i][0], border=1)
-        pdf.cell(15, row_height*spacing, txt=exam[i][1], border=1)
-        pdf.cell(30, row_height*spacing, txt=exam[i][2], border=1)
-        pdf.cell(15, row_height*spacing, txt=exam[i][3], border=1)
-        pdf.cell(30, row_height*spacing, txt=exam[i][4], border=1)
+    for i in range(36, 42):      
+        pdf.cell(5, row_height*spacing, txt=exam[i][0], border=1)
+        pdf.cell(21, row_height*spacing, txt=exam[i][1], border=1)
+        pdf.cell(8, row_height*spacing, txt=exam[i][2], border=1)
+        pdf.cell(8, row_height*spacing, txt=exam[i][3], border=1)
+        pdf.cell(8, row_height*spacing, txt=exam[i][4], border=1)
         pdf.cell(30, row_height*spacing, txt=exam[i][5], border=1)
+        pdf.cell(40, row_height*spacing, txt=exam[i][6], border=1)
+        pdf.cell(40, row_height*spacing, txt=exam[i][7], border=1)
+        pdf.cell(40, row_height*spacing, txt=exam[i][8], border=1)
         pdf.ln(row_height*spacing)
 
     pdf.output(output_file)
