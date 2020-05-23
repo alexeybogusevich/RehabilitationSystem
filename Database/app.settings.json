@@ -1,0 +1,5 @@
+{
+"ConnectionStrings": {
+    "azureSqlDb": "DRIVER={ODBC Driver 17 for SQL Server};SERVER=tcp:knurehabilitation.database.windows.net,1433;DATABASE=HeadRotationClinic;UID=master;PWD=8juc68hnr5JhgbzMLOGf"
+  }
+}
