@@ -168,6 +168,66 @@ def getCustomerExaminations(cursor, id):
                     .format(id))
     return cursor.fetchone()
 
+def getLastNotNullCustomerYawLeftExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND YawLeft IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
+def getLastNotNullCustomerYawRightExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND YawRight IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
+def getLastNotNullCustomerPitchDownExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND PitchDown IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
+def getLastNotNullCustomerPitchUpExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND PitchUp IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
+def getLastNotNullCustomerRollLeftExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND RollLeft IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
+def getLastNotNullCustomerRollRightExamination(cursor, id):
+    cursor.execute("""
+                SELECT TOP 1 * 
+                FROM dbo.tblStudies 
+                WHERE PatientID = '{}' AND RollRight IS NOT NULL
+                ORDER BY StudyDate DESC
+                """
+                .format(id))
+    return cursor.fetchone()
+
 def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.datetime.now(),Disease='',StudyResult='', StudyWay='',
                 StudyNotes='',Drugs='',PatientID='NULL', PatientAge='NULL',Doctor='',Price='NULL',
                 Device='', Method='', System='', StudyFile='', Department='',
@@ -180,7 +240,58 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                 YawLeftPainDegree='NULL',YawLeftPainDescription='',YawLeftPainDynamics='',YawLeftTriggerSpots='',
                 YawRightPainDegree='NULL', YawRightPainDescription='', YawRightPainDynamics='', YawRightTriggerSpots='',
                 RollLeftPainDegree='NULL', RollLeftPainDescription='', RollLeftPainDynamics='', RollLeftTriggerSpots='',
-                RollRightPainDegree='NULL',RollRightPainDescription='',RollRightPainDynamics='', RollRightTriggerSpots=''):
+                RollRightPainDegree='NULL',RollRightPainDescription='',RollRightPainDynamics='', RollRightTriggerSpots='',
+                YawLeftRotationDynamics='',YawRightRotationDynamics='',RollLeftRotationDynamics='',RollRightRotationDynamics='',PitchDownRotationDynamics='',PitchUpRotationDynamics=''):
+    if(PatientID != ''):
+        if(PitchDown != 'NULL'):
+            previousResult = getLastNotNullCustomerPitchDownExamination(cursor, PatientID)[20]
+            if(int(previousResult) > int(PitchDown)):
+                PitchDownRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(PitchDown)):
+                PitchDownRotationDynamics = 'Stable'
+            else:
+                PitchDownRotationDynamics = 'Positive'
+        if(PitchUp != 'NULL'):
+            previousResult = getLastNotNullCustomerPitchUpExamination(cursor, PatientID)[21]
+            if(int(previousResult) > int(PitchUp)):
+                PitchUpRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(PitchUp)):
+                PitchUpRotationDynamics = 'Stable'
+            else:
+                PitchUpRotationDynamics = 'Positive'
+        if(RollLeft != 'NULL'):
+            previousResult = getLastNotNullCustomerRollLeftExamination(cursor, PatientID)[24]
+            if(int(previousResult) > int(RollLeft)):
+                RollLeftRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(RollLeft)):
+                RollLeftRotationDynamics = 'Stable'
+            else:
+                RollLeftRotationDynamics = 'Positive'
+        if(RollRight != 'NULL'):
+            previousResult = getLastNotNullCustomerRollRightExamination(cursor, PatientID)[25]
+            if(int(previousResult) > int(RollRight)):
+                RollRightRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(RollRight)):
+                RollRightRotationDynamics = 'Stable'
+            else:
+                RollRightRotationDynamics = 'Positive'  
+        if(YawLeft != 'NULL'):
+            previousResult = getLastNotNullCustomerYawLeftExamination(cursor, PatientID)[22]
+            if(int(previousResult) > int(YawLeft)):
+                YawLeftRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(YawLeft)):
+                YawLeftRotationDynamics = 'Stable'
+            else:
+                YawLeftRotationDynamics = 'Positive'
+        if(YawRight != 'NULL'):
+            previousResult = getLastNotNullCustomerYawRightExamination(cursor, PatientID)[23]
+            if(int(previousResult) > int(YawRight)):
+                YawRightRotationDynamics = 'Negative'
+            elif(int(previousResult) == int(YawRight)):
+                YawRightRotationDynamics = 'Stable'
+            else:
+                YawRightRotationDynamics = 'Positive'
+
     query='''
                     INSERT 
                     INTO dbo.tblStudies
@@ -232,7 +343,13 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                         RollRightPainDegree,
                         RollRightPainDescription,
                         RollRightPainDynamics,
-                        RollRightTriggerSpots
+                        RollRightTriggerSpots,
+                        YawLeftRotationDynamics,
+                        YawRightRotationDynamics,
+                        RollLeftRotationDynamics,
+                        RollRightRotationDynamics,
+                        PitchDownRotationDynamics,
+                        PitchUpRotationDynamics
                         ) 
                         VALUES
                         ('{}','{}','{}','{}','{}','{}','{}',{},{},'{}',{},'{}','{}','{}','{}','{}',
@@ -242,7 +359,8 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                         {},'{}','{}','{}',
                         {},'{}','{}','{}',
                         {},'{}','{}','{}',
-                        {},'{}','{}','{}')
+                        {},'{}','{}','{}',
+                        '{}','{}','{}','{}','{}','{}')
                         '''.format(
                     Study,StudyType,StudyDate.strftime("%Y-%m-%d %H:%M:%S"),Disease,
                     StudyResult,StudyNotes,Drugs,
@@ -254,7 +372,9 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                     YawLeftPainDegree, YawLeftPainDescription, YawLeftPainDynamics, YawLeftTriggerSpots,
                     YawRightPainDegree, YawRightPainDescription, YawRightPainDynamics, YawRightTriggerSpots,
                     RollLeftPainDegree, RollLeftPainDescription, RollLeftPainDynamics, RollLeftTriggerSpots,
-                    RollRightPainDegree, RollRightPainDescription, RollRightPainDynamics, RollRightTriggerSpots)
+                    RollRightPainDegree, RollRightPainDescription, RollRightPainDynamics, RollRightTriggerSpots,
+                    YawLeftRotationDynamics, YawRightRotationDynamics, RollLeftRotationDynamics,
+                    RollRightRotationDynamics, PitchDownRotationDynamics, PitchUpRotationDynamics)
     print(query)
     cursor.execute(query)  
     context.commit()   
