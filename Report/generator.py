@@ -6,7 +6,8 @@ import sys
 import os
 import cgi
 
-def create_report(output_file, spacing = 1):
+def create_report(output_file, spacing = 1, _name='', _number='',_age='',_card='', _room='',_weight='',_height='',
+                    _yawleft='', _yawright='', _rollleft='', _rollright='',_pitchdown='', _pitchup=''):
     pdf = FPDF()
     pdf.add_font('DejaVu','','DejaVuSansCondensed.ttf',uni=True)
     pdf.add_page()
@@ -15,7 +16,8 @@ def create_report(output_file, spacing = 1):
 
     pdf.cell(200, 12, txt="Лист обстеження загальний   Дата_______________", ln=1, align="C")
 
-    header = report_data.get_header_table()
+    header = report_data.get_header_table(name=_name, age=_age,card=_card,room=_room,
+                weight=_weight,height=_height,number=_number)
 
     row_height = pdf.font_size * 1.1
 
@@ -287,12 +289,13 @@ def create_report(output_file, spacing = 1):
     pdf.add_page()
     pdf.cell(200, 12, txt="Обследование", ln=1, align="C")
 
-    exam = report_data.get_examination_table()
+    exam = report_data.get_examination_table(yawleft=str(_yawleft), yawright=str(_yawright), 
+                rollleft=str(_rollleft), rollright=str(_rollright),pitchdown=str(_pitchdown), pitchup=str(_pitchup))
 
     pdf.cell(200, row_height*spacing, txt=exam[0][0], border=1)
     pdf.ln(row_height*spacing)
 
-    for i in range(1,18):
+    for i in range(1,19):
         pdf.cell(5, row_height*spacing, txt=exam[i][0], border=1)
         pdf.cell(125, row_height*spacing, txt=exam[i][1], border=1)
         pdf.cell(15, row_height*spacing, txt=exam[i][2], border=1)
@@ -304,7 +307,7 @@ def create_report(output_file, spacing = 1):
     pdf.cell(200, row_height*spacing, txt=exam[19][0], border=1)
     pdf.ln(row_height*spacing)   
 
-    for i in range(20,28):
+    for i in range(20,29):
         pdf.cell(5, row_height*spacing, txt=exam[i][0], border=1)
         pdf.cell(125, row_height*spacing, txt=exam[i][1], border=1)
         pdf.cell(15, row_height*spacing, txt=exam[i][2], border=1)
@@ -313,19 +316,19 @@ def create_report(output_file, spacing = 1):
         pdf.cell(20, row_height*spacing, txt=exam[i][5], border=1)
         pdf.ln(row_height*spacing)    
 
-    for i in range(29, 35):      
+    for i in range(29, 36):      
         pdf.cell(200, row_height*spacing, txt=exam[i][0], border=1)
         pdf.ln(row_height*spacing)
 
-    for i in range(36, 42):      
+    for i in range(36, 43):      
         pdf.cell(5, row_height*spacing, txt=exam[i][0], border=1)
-        pdf.cell(21, row_height*spacing, txt=exam[i][1], border=1)
+        pdf.cell(31, row_height*spacing, txt=exam[i][1], border=1)
         pdf.cell(8, row_height*spacing, txt=exam[i][2], border=1)
         pdf.cell(8, row_height*spacing, txt=exam[i][3], border=1)
         pdf.cell(8, row_height*spacing, txt=exam[i][4], border=1)
         pdf.cell(30, row_height*spacing, txt=exam[i][5], border=1)
-        pdf.cell(40, row_height*spacing, txt=exam[i][6], border=1)
-        pdf.cell(40, row_height*spacing, txt=exam[i][7], border=1)
+        pdf.cell(35, row_height*spacing, txt=exam[i][6], border=1)
+        pdf.cell(35, row_height*spacing, txt=exam[i][7], border=1)
         pdf.cell(40, row_height*spacing, txt=exam[i][8], border=1)
         pdf.ln(row_height*spacing)
 
