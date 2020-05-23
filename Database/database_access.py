@@ -41,7 +41,7 @@ def getAllCustomers(cursor):
                     )
     return cursor.fetchone()
 
-def insertCustomer(cursor, UserName, UserPassword='', UserRole='', UserFullName='', 
+def insertCustomer(cursor, context, UserName, UserPassword='', UserRole='', UserFullName='', 
                     UserBirthDate=datetime.datetime(1980, 1, 1, 0, 0, 0), UserPhone='', UserEmail='',
                     OfficeNumber='', Prefix='', Title='', Speciality='', Department='', Division='', 
                     Supervisor='', AddTime='', LastLoginTime=datetime.datetime.now(),
@@ -82,7 +82,7 @@ def insertCustomer(cursor, UserName, UserPassword='', UserRole='', UserFullName=
                     LastLogoutTime.strftime("%Y-%m-%d %H:%M:%S"),Dead,PhotoPic))  
     context.commit()   
 
-def updateCustomer(cursor, id, UserName='', UserPassword='', UserRole='', UserFullName='', 
+def updateCustomer(cursor, context, id, UserName='', UserPassword='', UserRole='', UserFullName='', 
                     UserBirthDate=None, UserPhone='', UserEmail='',
                     OfficeNumber='', Prefix='', Title='', Speciality='', Department='', Division='', 
                     Supervisor='', AddTime='', LastLoginTime=None,
@@ -168,11 +168,19 @@ def getCustomerExaminations(cursor, id):
                     .format(id))
     return cursor.fetchone()
 
-def insertExamination(cursor, Study='',StudyType='',StudyDate=datetime.datetime.now(),Disease='',StudyResult='', StudyWay='',
+def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.datetime.now(),Disease='',StudyResult='', StudyWay='',
                 StudyNotes='',Drugs='',PatientID='NULL', PatientAge='NULL',Doctor='',Price='NULL',
                 Device='', Method='', System='', StudyFile='', Department='',
-                Complaints='', RiskFactors='', MinRotation='NULL', MaxRotation='NULL', 
-                AvgRotation='NULL', Repeats='NULL'):
+                Complaints='', RiskFactors='', 
+                PitchDown='NULL', PitchUp='NULL', 
+                YawLeft='NULL', YawRight='NULL',
+                RollLeft='NULL',RollRight='NULL',
+                PitchDownPainDegree='NULL',PitchDownPainDescription='',PitchDownPainDynamics='', PitchDownTriggerSpots='',
+                PitchUpPainDegree='NULL',PitchUpPainDescription='',PitchUpPainDynamics='',PitchUpTriggerSpots='',
+                YawLeftPainDegree='NULL',YawLeftPainDescription='',YawLeftPainDynamics='',YawLeftTriggerSpots='',
+                YawRightPainDegree='NULL', YawRightPainDescription='', YawRightPainDynamics='', YawRightTriggerSpots='',
+                RollLeftPainDegree='NULL', RollLeftPainDescription='', RollLeftPainDynamics='', RollLeftTriggerSpots='',
+                RollRightPainDegree='NULL',RollRightPainDescription='',RollRightPainDynamics='', RollRightTriggerSpots=''):
     query='''
                     INSERT 
                     INTO dbo.tblStudies
@@ -195,20 +203,58 @@ def insertExamination(cursor, Study='',StudyType='',StudyDate=datetime.datetime.
                         Department,
                         Complaints, 
                         RiskFactors, 
-                        MinRotation,
-                        MaxRotation,
-                        AvgRotation,
-                        Repeats
+                        PitchDown,
+                        PitchUp,
+                        YawLeft,
+                        YawRight,
+                        RollLeft,
+                        RollRight,
+                        PitchDownPainDegree,
+                        PitchDownPainDescription,
+                        PitchDownPainDynamics,
+                        PitchDownTriggerSpots,
+                        PitchUpPainDegree,
+                        PitchUpPainDescription,
+                        PitchUpPainDynamics,
+                        PitchUpTriggerSpots,
+                        YawLeftPainDegree,
+                        YawLeftPainDescription,
+                        YawLeftPainDynamics,
+                        YawLeftTriggerSpots,
+                        YawRightPainDegree,
+                        YawRightPainDescription,
+                        YawRightPainDynamics,
+                        YawRightTriggerSpots,
+                        RollLeftPainDegree,
+                        RollLeftPainDescription,
+                        RollLeftPainDynamics,
+                        RollLeftTriggerSpots,
+                        RollRightPainDegree,
+                        RollRightPainDescription,
+                        RollRightPainDynamics,
+                        RollRightTriggerSpots
                         ) 
                         VALUES
                         ('{}','{}','{}','{}','{}','{}','{}',{},{},'{}',{},'{}','{}','{}','{}','{}',
-                        '{}','{}',{}, {}, {}, {})
+                        '{}','{}',{}, {}, {}, {}, {}, {}, 
+                        {},'{}','{}','{}',
+                        {},'{}','{}','{}',
+                        {},'{}','{}','{}',
+                        {},'{}','{}','{}',
+                        {},'{}','{}','{}',
+                        {},'{}','{}','{}')
                         '''.format(
                     Study,StudyType,StudyDate.strftime("%Y-%m-%d %H:%M:%S"),Disease,
                     StudyResult,StudyNotes,Drugs,
                     PatientID,PatientAge,Doctor,Price,Device,Method,
                     System,StudyFile,Department,Complaints,RiskFactors,
-                    MinRotation,MaxRotation,AvgRotation,Repeats)
+                    PitchDown, PitchUp, YawLeft, YawRight, RollLeft, RollRight,
+                    PitchDownPainDegree, PitchDownPainDescription, PitchDownPainDynamics, PitchDownTriggerSpots,
+                    PitchUpPainDegree, PitchUpPainDescription, PitchUpPainDynamics, PitchUpTriggerSpots,
+                    YawLeftPainDegree, YawLeftPainDescription, YawLeftPainDynamics, YawLeftTriggerSpots,
+                    YawRightPainDegree, YawRightPainDescription, YawRightPainDynamics, YawRightTriggerSpots,
+                    RollLeftPainDegree, RollLeftPainDescription, RollLeftPainDynamics, RollLeftTriggerSpots,
+                    RollRightPainDegree, RollRightPainDescription, RollRightPainDynamics, RollRightTriggerSpots)
     print(query)
     cursor.execute(query)  
     context.commit()   
