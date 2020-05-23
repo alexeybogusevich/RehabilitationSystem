@@ -1,0 +1,14 @@
+{
+	"pitch": {
+		"yaw_range": (-15.0, 15.0),
+		"roll_range": (-15.0, 15.0)
+	},
+	"yaw": {
+		"pitch_range": (-15.0, 15.0),
+		"roll_range": (-15.0, 15.0)
+	},
+	"roll": {
+		"yaw_range": (-15.0, 15.0),
+		"pitch_range": (-15.0, 15.0)
+	}
+}

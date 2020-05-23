@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/1_small.png</file>
+    <file>icons/2_small.png</file>
+    <file>icons/3_small.png</file>
+  </qresource>
+  <qresource prefix="open">
+    <file>icons/cam.png</file>
+    <file>icons/file.png</file>
+  </qresource>
+</RCC>

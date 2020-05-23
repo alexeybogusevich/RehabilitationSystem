@@ -1,0 +1,1 @@
+Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Data Source=IDEA-PC;Initial Catalog=HeadRotationClinic;
