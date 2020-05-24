@@ -13,7 +13,6 @@ if os.path.exists(dotenv_path):
 
 def connectToDb():
     connectionString = os.environ.get("azureSqlDb")
-    print(connectionString)
     context = pyodbc.connect(connectionString)
     return context
 

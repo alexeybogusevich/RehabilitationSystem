@@ -142,9 +142,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.stat_records.saveRaw("../output/" + self.output_filename + ".txt")
         self.stat_records.saveExcel("../output/" + self.output_filename + ".xlsx")
 
-    def writeToDb():
-        #notimplemented
-
     def processSourceFrame(self):
         success, frame = self.vc.read()
         if success:

@@ -3,15 +3,14 @@
 #  Created by Dmytro Kotsur on 9/23/19, 12:32 AM.
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 
+import sys
 from PyQt5 import QtCore
 import numpy as np
 import pandas as pd
+import tkinter as tk
+from tkinter import filedialog
 from database import database_access
-
-# from report import generator
-
-context = database_access.connectToDb()
-
+from report import generator
 
 class StatRecords(QtCore.QObject):
 
@@ -65,6 +64,96 @@ class StatRecords(QtCore.QObject):
             fout.write("Yaw_Right, " + ", ".join(map(str, self.yaw_r)) + "\n")
             fout.write("Roll_Left, " + ", ".join(map(str, self.roll_l)) + "\n")
             fout.write("Roll_Right, " + ", ".join(map(str, self.roll_r)) + "\n")
+
+    def getMaxPitchL():
+        max_pitch_l = 0
+        for value in self.pitch_l:
+            if(value > max_pitch_l):
+                max_pitch_l = value
+        return max_pitch_l
+
+    def getMaxPitchR():
+        max_pitch_r = 0
+        for value in self.pitch_r:
+            if(value > max_pitch_r):
+                max_pitch_r = value
+        return max_pitch_r
+
+    def getMaxYawL():
+        max_yaw_l = 0
+        for value in self.yaw_l:
+            if(value > max_yaw_l):
+                max_yaw_l = value
+        return max_yaw_l
+
+    def getMaxYawR():
+        max_yaw_r = 0
+        for value in self.yaw_r:
+            if(value > max_yaw_r):
+                max_yaw_r = value
+        return max_yaw_r
+
+
+    def getMaxRollL():
+        max_roll_l = 0
+        for value in self.roll_r:
+            if(value > max_roll_l):
+                max_roll_l = value
+        return max_roll_l
+
+    def getMaxRollR():
+        max_roll_r = 0
+        for value in self.roll_r:
+            if(value > max_roll_r):
+                max_roll_r = value
+        return max_roll_r
+
+    def writeToDb(self, patient_id):
+        max_yaw_l = self.getMaxYawL()
+        max_yaw_r = self.getMaxPitchR()
+        max_roll_l = self.getMaxRollL()
+        max_roll_r = self.getMaxRollR()
+        max_pitch_l = self.getMaxPitchL()
+        max_pitch_r = self.getMaxPitchR()
+
+        context = database_access.connectToDb()
+        cursor = context.cursor()
+
+        database_access.insertExamination(
+        cursor,context, PatientID=patient_id,
+        YawLeft=max_yaw_l,YawRight=max_yaw_r, 
+        RollLeft=max_roll_r, RollRight=max_roll_r,
+        PitchDown=max_pitch_l, PitchUp=max_pitch_r)
+        cursor.close()
+        del cursor
+
+    def generateReport(patient_id):
+        max_yaw_l = self.getMaxYawL()
+        max_yaw_r = self.getMaxPitchR()
+        max_roll_l = self.getMaxRollL()
+        max_roll_r = self.getMaxRollR()
+        max_pitch_l = self.getMaxPitchL()
+        max_pitch_r = self.getMaxPitchR()
+        root = tk.Tk()
+        root.withdraw()
+        file_path = filedialog.askopenfilename()
+        context = database_access.connectToDb()
+        cursor = context.cursor()
+        patient = database_access.getPatientById(patient_id)
+        generator.create_report(
+        output_file = file_path,
+        _rollleft=max_roll_l,
+        _rollright=max_roll_r,
+        _yawleft=max_yaw_l,
+        _yawright=max_yaw_r,
+        _pitchdown=max_pitch_l,
+        _pitchup=max_pitch_r,
+        _name=patient[1],
+        _card=patient[8],
+        _number=patient[6],
+        )
+        cursor.close()
+        del cursor
 
     def saveExcel(self, filename):
         df = pd.DataFrame(
