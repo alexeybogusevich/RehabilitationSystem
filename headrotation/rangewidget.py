@@ -10,7 +10,7 @@ class RangeWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(RangeWidget, self).__init__(parent)
 
-        from .rangewidget_ui import Ui_Range
+        from rangewidget_ui import Ui_Range
 
         self.ui = Ui_Range()
         self.ui.setupUi(self)

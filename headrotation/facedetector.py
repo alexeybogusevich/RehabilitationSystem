@@ -34,7 +34,7 @@ class FaceDetector(object):
     )
     # LANDMARK_3DMODEL_FILE = r"../lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
     LANDMARK_3DMODEL_FILE = (
-        "C:/Alex/ReabilitationSystem/lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
+        "C:/Alex/ReabilitationSystem/headrotation/lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
     )
 
     def __init__(self):

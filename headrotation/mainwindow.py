@@ -40,16 +40,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.glviewer = None
         if not args.no3d:
             self.glviewer = GLViewer()
-            # self.glviewer.faces = loadmat('../Lib3DDFA/visualize/tri.mat')['tri'] - 1
+            #self.glviewer.faces = loadmat('/Lib3DDFA/visualize/tri.mat')['tri'] - 1
             self.glviewer.faces = (
-                loadmat("C:/Alex/ReabilitationSystem/lib3DDFA/visualize/tri.mat")["tri"]
+                loadmat("C:/Alex/ReabilitationSystem/headrotation/lib3DDFA/visualize/tri.mat")["tri"]
                 - 1
             )
 
-            # points, triangles, normals = load3d_obj("../data/model3d/male_head_fix3.obj")
-            points, triangles, normals = load3d_obj(
-                "C:/Alex/ReabilitationSystem/data/model3d/male_head_fix3.obj"
-            )
+            #points, triangles, normals = load3d_obj("../data/model3d/male_head_fix3.obj")
+            points, triangles, normals = load3d_obj("C:/Alex/ReabilitationSystem/data/model3d/male_head_fix3.obj")
             points[..., 2] = -points[..., 2]
             self.avatar = surfacevis.SurfaceVisItem(
                 points * 5.0, triangles, normals, False, True
@@ -139,8 +137,10 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Yaw maxima:", value)
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.stat_records.saveRaw("../output/" + self.output_filename + ".txt")
-        self.stat_records.saveExcel("../output/" + self.output_filename + ".xlsx")
+        #self.stat_records.saveRaw("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".txt")
+        #self.stat_records.saveExcel("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".xlsx")
+        self.stat_records.writeToDb()
+        self.stat_records.generateReport()
 
     def processSourceFrame(self):
         success, frame = self.vc.read()

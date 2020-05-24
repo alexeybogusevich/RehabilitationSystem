@@ -114,5 +114,5 @@ class Ui_Form(object):
         self.labeYaw.setText(_translate("Form", "1 градусів"))
 
 
-from .angleswidget import *
-from .rangewidget import RangeWidget
+from angleswidget import *
+from rangewidget import RangeWidget

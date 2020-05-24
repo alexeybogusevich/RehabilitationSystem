@@ -10,7 +10,7 @@ class AnglesWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(AnglesWidget, self).__init__(parent)
 
-        from .angleswidget_ui import Ui_Form
+        from angleswidget_ui import Ui_Form
 
         self.ui = Ui_Form()
         self.ui.setupUi(self)
