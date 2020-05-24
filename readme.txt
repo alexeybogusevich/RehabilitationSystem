@@ -10,3 +10,8 @@ http://download.microsoft.com/download/1/D/9/1D9A6C0E-FC89-43EE-9658-B9F0E3A7698
 4. Install CMake. Link:
 https://github.com/Kitware/CMake/releases/download/v3.14.6/cmake-3.14.6-win32-x86.msi
 (Click add to All Users)
+
+5. Install 'Patients Accounting'. Link:
+http://www.prostoysoft.ru/PatientsCount.htm
+
+6. Launch 'Patients Accounting' and connect to Azure SQL Db.
