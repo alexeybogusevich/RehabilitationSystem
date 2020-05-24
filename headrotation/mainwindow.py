@@ -11,17 +11,17 @@ from datetime import datetime
 from scipy.io import loadmat
 
 # inner packages
-from .glviewer import GLViewer
-from .angleswidget import AnglesWidget
-from .imagewidget import ImageWidget
+from glviewer import GLViewer
+from angleswidget import AnglesWidget
+from imagewidget import ImageWidget
 
-from .visuals.visitems import surfacevis, kpvis, plotvis, linevis
-from .utils.image import toQImage
-from .utils.angle import Angle
-from .facedetector import FaceDetector
-from .utils.load3d import load3d_obj
-from .utils.vtracker import VTracker
-from .utils.stat import StatRecords
+from visuals.visitems import surfacevis, kpvis, plotvis, linevis
+from utils.image import toQImage
+from utils.angle import Angle
+from facedetector import FaceDetector
+from utils.load3d import load3d_obj
+from utils.vtracker import VTracker
+from utils.stat import StatRecords
 from scipy.spatial import Delaunay
 
 

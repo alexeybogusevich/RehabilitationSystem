@@ -7,8 +7,8 @@
 import OpenGL.GL as gl
 from PyQt5 import QtWidgets
 
-from .visuals.camera import CameraOrtho2D
-from .visuals.visitems import visitem
+from visuals.camera import CameraOrtho2D
+from visuals.visitems import visitem
 
 
 class GLViewer(QtWidgets.QOpenGLWidget):

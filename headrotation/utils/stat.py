@@ -6,7 +6,7 @@
 from PyQt5 import QtCore
 import numpy as np
 import pandas as pd
-from Database import database_access
+from database import database_access
 
 # from report import generator
 

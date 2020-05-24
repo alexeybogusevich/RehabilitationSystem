@@ -3,9 +3,9 @@
 #  Created by Dmytro Kotsur on 10/21/19, 12:02 AM.
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 
-from .intro_ui import Ui_Form
+from intro_ui import Ui_Form
 from PyQt5 import QtWidgets, QtGui
-from .mainwindow import MainWindow
+from mainwindow import MainWindow
 
 
 class LoginWidget(QtWidgets.QWidget):
