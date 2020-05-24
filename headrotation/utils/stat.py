@@ -9,8 +9,9 @@ import numpy as np
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog
-from database import database_access
-from report import generator
+import easygui
+from ..database.database_access import *
+from ..report.generator import *
 
 class StatRecords(QtCore.QObject):
 
@@ -19,12 +20,25 @@ class StatRecords(QtCore.QObject):
 
     def __init__(self, parent=None):
         super(StatRecords, self).__init__(parent)
+        self.patientId = self.getValidatedPatient()
         self.yaw_l = []
         self.yaw_r = []
         self.pitch_l = []
         self.pitch_r = []
         self.roll_l = []
         self.roll_r = []
+
+    def getValidatedPatient(label="Enter Patient ID: "):
+        patient_id = easygui.enterbox(label)
+        context = database_access.connectToDb()
+        cursor = context.cursor()
+        patient = database_access.getPatientById(cursor, patient_id)
+        if(patient == None):
+            self.getValidatedPatient("Patient does not exist. Go to Patients Accounting and create one. Id: ")
+        else:
+            cursor.close()
+            del cursor
+            return patient_id
 
     def updateYaw(self, yaw_val):
         if yaw_val < 0.0:
@@ -108,26 +122,26 @@ class StatRecords(QtCore.QObject):
                 max_roll_r = value
         return max_roll_r
 
-    def writeToDb(self, patient_id):
-        max_yaw_l = self.getMaxYawL()
-        max_yaw_r = self.getMaxPitchR()
+    def writeToDb(self):
+        max_yaw_l = self.stat(self.pitch_l)[1]
+        max_yaw_r = self.stat(self.pitch_l)
         max_roll_l = self.getMaxRollL()
         max_roll_r = self.getMaxRollR()
         max_pitch_l = self.getMaxPitchL()
         max_pitch_r = self.getMaxPitchR()
-
+        
         context = database_access.connectToDb()
         cursor = context.cursor()
 
         database_access.insertExamination(
-        cursor,context, PatientID=patient_id,
+        cursor,context, PatientID=self.patientId,
         YawLeft=max_yaw_l,YawRight=max_yaw_r, 
         RollLeft=max_roll_r, RollRight=max_roll_r,
         PitchDown=max_pitch_l, PitchUp=max_pitch_r)
         cursor.close()
         del cursor
 
-    def generateReport(patient_id):
+    def generateReport():
         max_yaw_l = self.getMaxYawL()
         max_yaw_r = self.getMaxPitchR()
         max_roll_l = self.getMaxRollL()
@@ -139,7 +153,8 @@ class StatRecords(QtCore.QObject):
         file_path = filedialog.askopenfilename()
         context = database_access.connectToDb()
         cursor = context.cursor()
-        patient = database_access.getPatientById(patient_id)
+        pId = self.patientId
+        patient = database_access.getPatientById(pId)
         generator.create_report(
         output_file = file_path,
         _rollleft=max_roll_l,
