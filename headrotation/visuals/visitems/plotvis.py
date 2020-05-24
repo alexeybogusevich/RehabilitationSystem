@@ -4,13 +4,14 @@
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 #
 
-from visuals.visitems.visitem import VisualItem
+from .visitem import VisualItem
 import OpenGL.GL as gl
 
 
 class PlotVisItem(VisualItem):
-
-    def __init__(self, y=0.0, width=0.1, color=(1.0, 0.0, 0.0), max_points=300, range=(-90, 90)):
+    def __init__(
+        self, y=0.0, width=0.1, color=(1.0, 0.0, 0.0), max_points=300, range=(-90, 90)
+    ):
         super(PlotVisItem, self).__init__()
         self.mouse_is_pressed = False
         self.max_points = max_points
@@ -30,7 +31,9 @@ class PlotVisItem(VisualItem):
         import numpy as np
 
         df = pd.DataFrame()
-        df['angle'] = (self.range[1] - self.range[0]) * np.asarray(self.plot_avg) + self.range[0]
+        df["angle"] = (self.range[1] - self.range[0]) * np.asarray(
+            self.plot_avg
+        ) + self.range[0]
         df.to_csv(filename)
 
     def drawGL(self):
@@ -71,13 +74,10 @@ class PlotVisItem(VisualItem):
     def addValue(self, p):
         self.plot.append((p - self.range[0]) / (self.range[1] - self.range[0]))
 
-        window = self.plot[-self.window_size::]
+        window = self.plot[-self.window_size : :]
         self.plot_avg.append(sum(window) / len(window))
 
-        self.plot = self.plot[-self.max_points::]
-        self.plot_avg = self.plot_avg[-self.max_points::]
+        self.plot = self.plot[-self.max_points : :]
+        self.plot_avg = self.plot_avg[-self.max_points : :]
 
         return self.plot_avg[-1] * (self.range[1] - self.range[0]) + self.range[0]
-
-
-

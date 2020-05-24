@@ -4,11 +4,12 @@
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 
 from PyQt5 import QtWidgets
-from intro import IntroWidget
+from .intro import IntroWidget
 
 
 def main():
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
     intro = IntroWidget()

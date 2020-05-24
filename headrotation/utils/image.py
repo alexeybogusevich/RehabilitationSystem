@@ -13,4 +13,6 @@ def toQImage(img):
     rgb = img.copy()
     rgb = rgb.astype(np.uint8)
     rgb[..., 0], rgb[..., 2] = rgb[..., 2], rgb[..., 0]
-    return QtGui.QImage(rgb.data, sz[1], sz[0], bytes_per_line, QtGui.QImage.Format_RGB888)
+    return QtGui.QImage(
+        rgb.data, sz[1], sz[0], bytes_per_line, QtGui.QImage.Format_RGB888
+    )

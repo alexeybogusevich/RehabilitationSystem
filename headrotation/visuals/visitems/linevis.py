@@ -12,14 +12,15 @@ import OpenGL.arrays.vbo as glvbo
 
 
 class LineVisItem(VisualItem):
-
     def __init__(self, points):
         super(LineVisItem, self).__init__()
         self.vbo_points = None
         self.vbo_indices = None
         self.mouse_is_pressed = False
         self.points = points
-        self.lines = np.arange(len(points)).reshape(len(points) // 2, 2).astype(np.uint32)
+        self.lines = (
+            np.arange(len(points)).reshape(len(points) // 2, 2).astype(np.uint32)
+        )
 
     def initGL(self):
         self.vbo_points = glvbo.VBO(self.points, usage=gl.GL_DYNAMIC_DRAW)
@@ -43,7 +44,7 @@ class LineVisItem(VisualItem):
 
         gl.glLineWidth(5.0)
         gl.glColor4f(1.0, 0.1, 0.1, 1.0)
-        #gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
+        # gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
         gl.glDrawElements(gl.GL_LINES, 2 * len(self.lines), gl.GL_UNSIGNED_INT, None)
 
         # gl.glPointSize(5.0)

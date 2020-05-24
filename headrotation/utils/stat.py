@@ -6,6 +6,11 @@
 from PyQt5 import QtCore
 import numpy as np
 import pandas as pd
+from Database import database_access
+
+# from report import generator
+
+context = database_access.connectToDb()
 
 
 class StatRecords(QtCore.QObject):
@@ -54,25 +59,27 @@ class StatRecords(QtCore.QObject):
 
     def saveRaw(self, filename):
         with open(filename, "w") as fout:
-            fout.write("Pitch_Left, " + ", ".join(map(str, self.pitch_l)) + '\n')
-            fout.write("Pitch_Right, " + ", ".join(map(str, self.pitch_r)) + '\n')
-            fout.write("Yaw_Left, " + ", ".join(map(str, self.yaw_l)) + '\n')
-            fout.write("Yaw_Right, " + ", ".join(map(str, self.yaw_r)) + '\n')
-            fout.write("Roll_Left, " + ", ".join(map(str, self.roll_l)) + '\n')
-            fout.write("Roll_Right, " + ", ".join(map(str, self.roll_r)) + '\n')
+            fout.write("Pitch_Left, " + ", ".join(map(str, self.pitch_l)) + "\n")
+            fout.write("Pitch_Right, " + ", ".join(map(str, self.pitch_r)) + "\n")
+            fout.write("Yaw_Left, " + ", ".join(map(str, self.yaw_l)) + "\n")
+            fout.write("Yaw_Right, " + ", ".join(map(str, self.yaw_r)) + "\n")
+            fout.write("Roll_Left, " + ", ".join(map(str, self.roll_l)) + "\n")
+            fout.write("Roll_Right, " + ", ".join(map(str, self.roll_r)) + "\n")
 
     def saveExcel(self, filename):
-        df = pd.DataFrame({
-            "Angle": ["Min", "Max", "Avg", "Rep"],
-            "Pitch_Left": list(self.stat(self.pitch_l)),
-            "Pitch_Right": list(self.stat(self.pitch_r)),
-            "Yaw_Left": list(self.stat(self.yaw_l)),
-            "Yaw_Right": list(self.stat(self.yaw_r)),
-            "Roll_Left": list(self.stat(self.roll_l)),
-            "Roll_Right": list(self.stat(self.roll_r))
-        })
+        df = pd.DataFrame(
+            {
+                "Angle": ["Min", "Max", "Avg", "Rep"],
+                "Pitch_Left": list(self.stat(self.pitch_l)),
+                "Pitch_Right": list(self.stat(self.pitch_r)),
+                "Yaw_Left": list(self.stat(self.yaw_l)),
+                "Yaw_Right": list(self.stat(self.yaw_r)),
+                "Roll_Left": list(self.stat(self.roll_l)),
+                "Roll_Right": list(self.stat(self.roll_r)),
+            }
+        )
 
         df = df.set_index(["Angle"])
 
-        with pd.ExcelWriter(filename)as writer:
+        with pd.ExcelWriter(filename) as writer:
             df.to_excel(writer)

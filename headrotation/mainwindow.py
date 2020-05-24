@@ -9,18 +9,19 @@ import numpy as np
 from PyQt5 import QtWidgets, QtGui, QtCore
 from datetime import datetime
 from scipy.io import loadmat
-# inner packages
-from glviewer import GLViewer
-from angleswidget import AnglesWidget
-from imagewidget import ImageWidget
 
-from visuals.visitems import surfacevis, kpvis, plotvis, linevis
-from utils.image import toQImage
-from utils.angle import Angle
-from facedetector import FaceDetector
-from utils.load3d import load3d_obj
-from utils.vtracker import VTracker
-from utils.stat import StatRecords
+# inner packages
+from .glviewer import GLViewer
+from .angleswidget import AnglesWidget
+from .imagewidget import ImageWidget
+
+from .visuals.visitems import surfacevis, kpvis, plotvis, linevis
+from .utils.image import toQImage
+from .utils.angle import Angle
+from .facedetector import FaceDetector
+from .utils.load3d import load3d_obj
+from .utils.vtracker import VTracker
+from .utils.stat import StatRecords
 from scipy.spatial import Delaunay
 
 
@@ -29,7 +30,6 @@ TEXTSCALE = 1.5 / DOWNSAMPLE
 
 
 class MainWindow(QtWidgets.QMainWindow):
-
     def __init__(self, args, parent=None):
         super(MainWindow, self).__init__(parent)
 
@@ -40,13 +40,20 @@ class MainWindow(QtWidgets.QMainWindow):
         self.glviewer = None
         if not args.no3d:
             self.glviewer = GLViewer()
-            #self.glviewer.faces = loadmat('../Lib3DDFA/visualize/tri.mat')['tri'] - 1
-            self.glviewer.faces = loadmat('C:/Alex/ReabilitationSystem/lib3DDFA/visualize/tri.mat')['tri'] - 1
+            # self.glviewer.faces = loadmat('../Lib3DDFA/visualize/tri.mat')['tri'] - 1
+            self.glviewer.faces = (
+                loadmat("C:/Alex/ReabilitationSystem/lib3DDFA/visualize/tri.mat")["tri"]
+                - 1
+            )
 
-            #points, triangles, normals = load3d_obj("../data/model3d/male_head_fix3.obj")
-            points, triangles, normals = load3d_obj("C:/Alex/ReabilitationSystem/data/model3d/male_head_fix3.obj")
+            # points, triangles, normals = load3d_obj("../data/model3d/male_head_fix3.obj")
+            points, triangles, normals = load3d_obj(
+                "C:/Alex/ReabilitationSystem/data/model3d/male_head_fix3.obj"
+            )
             points[..., 2] = -points[..., 2]
-            self.avatar = surfacevis.SurfaceVisItem(points * 5.0, triangles, normals, False, True)
+            self.avatar = surfacevis.SurfaceVisItem(
+                points * 5.0, triangles, normals, False, True
+            )
 
         self.plot_pitch = plotvis.PlotVisItem(0.0, 0.05, (1.0, 0.0, 0.0))
         self.plot_roll = plotvis.PlotVisItem(0.05, 0.05, (0.0, 1.0, 0.0))
@@ -69,9 +76,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.video_out = None
         if args.save_video:
-            self.video_out = cv2.VideoWriter("../output/" + self.output_filename + ".mp4",
-                                             cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 7,
-                                             (self.frame_width // DOWNSAMPLE, self.frame_height // DOWNSAMPLE))
+            self.video_out = cv2.VideoWriter(
+                "../output/" + self.output_filename + ".mp4",
+                cv2.VideoWriter_fourcc("M", "J", "P", "G"),
+                7,
+                (self.frame_width // DOWNSAMPLE, self.frame_height // DOWNSAMPLE),
+            )
 
         self.process_timer = QtCore.QTimer()
         self.process_timer.timeout.connect(self.processSourceFrame)
@@ -97,8 +107,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(mainwidget)
 
         self.stat_records = StatRecords()
-        self.stat_records.valuesChangedL.connect(self.anglewidget.updateRangeLStatistics)
-        self.stat_records.valuesChangedR.connect(self.anglewidget.updateRangeRStatistics)
+        self.stat_records.valuesChangedL.connect(
+            self.anglewidget.updateRangeLStatistics
+        )
+        self.stat_records.valuesChangedR.connect(
+            self.anglewidget.updateRangeRStatistics
+        )
 
         self.yaw_tracker = VTracker()
         self.yaw_tracker.maximum_found.connect(self.stat_records.updateYaw)
@@ -174,8 +188,8 @@ class MainWindow(QtWidgets.QMainWindow):
                         cv2.line(gray3, p1, p2, (255, 255, 150), 1, cv2.LINE_AA)
 
                 pts = np.zeros(shape=(68, 3), dtype=np.float32)
-                pts[:, 0] = (pts68[0] - sz[1]/2)
-                pts[:, 1] = (sz[0]/2 - pts68[1])
+                pts[:, 0] = pts68[0] - sz[1] / 2
+                pts[:, 1] = sz[0] / 2 - pts68[1]
                 pts[:, 2] = pts68[2]
 
                 self.angle_handler.set(pts)
@@ -215,9 +229,30 @@ class MainWindow(QtWidgets.QMainWindow):
                 text_roll = "Roll: {0:.0f}".format(angle_roll_s)
                 text_yaw = "Yaw: {0:.0f}".format(angle_yaw_s)
 
-                cv2.putText(out_frame, text_pitch, (5, 50), cv2.FONT_HERSHEY_TRIPLEX, TEXTSCALE, (10, 10, 200))
-                cv2.putText(out_frame, text_roll, (5, 90), cv2.FONT_HERSHEY_TRIPLEX, TEXTSCALE, (10, 10, 200))
-                cv2.putText(out_frame, text_yaw, (5, 130), cv2.FONT_HERSHEY_TRIPLEX, TEXTSCALE, (10, 10, 200))
+                cv2.putText(
+                    out_frame,
+                    text_pitch,
+                    (5, 50),
+                    cv2.FONT_HERSHEY_TRIPLEX,
+                    TEXTSCALE,
+                    (10, 10, 200),
+                )
+                cv2.putText(
+                    out_frame,
+                    text_roll,
+                    (5, 90),
+                    cv2.FONT_HERSHEY_TRIPLEX,
+                    TEXTSCALE,
+                    (10, 10, 200),
+                )
+                cv2.putText(
+                    out_frame,
+                    text_yaw,
+                    (5, 130),
+                    cv2.FONT_HERSHEY_TRIPLEX,
+                    TEXTSCALE,
+                    (10, 10, 200),
+                )
 
                 self.video_out.write(out_frame)
 
@@ -230,6 +265,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 def main(args):
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
     window = MainWindow(args)
@@ -240,6 +276,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', default=0, dest='input')
-    parser.add_argument('-n', '--no3d', action='store_true', dest='no3d')
+    parser.add_argument("-i", "--input", default=0, dest="input")
+    parser.add_argument("-n", "--no3d", action="store_true", dest="no3d")
     main(parser.parse_args())

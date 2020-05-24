@@ -21,7 +21,9 @@ class Ui_Form(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.widgetPitch = RangeWidget(Form)
         self.widgetPitch.setMinimumSize(QtCore.QSize(120, 0))
@@ -95,7 +97,9 @@ class Ui_Form(object):
         self.labeYaw.setTextFormat(QtCore.Qt.RichText)
         self.labeYaw.setObjectName("labeYaw")
         self.horizontalLayout_3.addWidget(self.labeYaw)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_3.addItem(spacerItem1)
         self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
 
@@ -108,6 +112,7 @@ class Ui_Form(object):
         self.labePitch.setText(_translate("Form", "1 градусів"))
         self.labeRoll.setText(_translate("Form", "1 градусів"))
         self.labeYaw.setText(_translate("Form", "1 градусів"))
-        
-from rangewidget import RangeWidget
-import angleswidget_res
+
+
+from .angleswidget import *
+from .rangewidget import RangeWidget
