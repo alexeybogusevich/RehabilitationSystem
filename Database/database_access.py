@@ -11,7 +11,7 @@ def connectToDb():
     context = pyodbc.connect(connectionString)
     return context
 
-def getCustomerById(cursor, id):
+def getUserById(cursor, id):
     cursor.execute("""
                     SELECT * 
                     FROM dbo.tblUsers 
@@ -20,7 +20,16 @@ def getCustomerById(cursor, id):
                     .format(id))
     return cursor.fetchone()
 
-def getCustomerByName(cursor, UserName):
+def getPatientById(cursor, id):
+    cursor.execute("""
+                    SELECT * 
+                    FROM dbo.tblMain 
+                    WHERE ID = {}
+                    """
+                    .format(id))
+    return cursor.fetchone()
+
+def getUserByName(cursor, UserName):
     cursor.execute("""
                     SELECT * 
                     FROM dbo.tblUsers 
@@ -29,13 +38,30 @@ def getCustomerByName(cursor, UserName):
                     .format(UserName))
     return cursor.fetchone()
 
-def getAllCustomers(cursor):
+def getPatientByName(cursor, name):
+    cursor.execute("""
+                    SELECT * 
+                    FROM dbo.tblMain 
+                    WHERE Patient = {}
+                    """
+                    .format(name))
+    return cursor.fetchone()
+
+def getAllUsers(cursor):
     cursor.execute("""
                     SELECT * 
                     FROM dbo.tblUsers 
                     """
                     )
-    return cursor.fetchone()
+    return cursor.fetchall()
+
+def getAllPatients(cursor):
+    cursor.execute("""
+                    SELECT * 
+                    FROM dbo.tblMain 
+                    """
+                    )
+    return cursor.fetchall()
 
 def getAllStudies(cursor):
     cursor.execute("""
@@ -43,9 +69,9 @@ def getAllStudies(cursor):
                     FROM dbo.tblStudies 
                     """
                     )
-    return cursor.fetchone()
+    return cursor.fetchall()
 
-def insertCustomer(cursor, context, UserName, UserPassword='', UserRole='', UserFullName='', 
+def insertUser(cursor, context, UserName, UserPassword='', UserRole='', UserFullName='', 
                     UserBirthDate=datetime.datetime(1980, 1, 1, 0, 0, 0), UserPhone='', UserEmail='',
                     OfficeNumber='', Prefix='', Title='', Speciality='', Department='', Division='', 
                     Supervisor='', AddTime='', LastLoginTime=datetime.datetime.now(),
@@ -86,7 +112,7 @@ def insertCustomer(cursor, context, UserName, UserPassword='', UserRole='', User
                     LastLogoutTime.strftime("%Y-%m-%d %H:%M:%S"),Dead,PhotoPic))  
     context.commit()   
 
-def updateCustomer(cursor, context, id, UserName='', UserPassword='', UserRole='', UserFullName='', 
+def updateUser(cursor, context, id, UserName='', UserPassword='', UserRole='', UserFullName='', 
                     UserBirthDate=None, UserPhone='', UserEmail='',
                     OfficeNumber='', Prefix='', Title='', Speciality='', Department='', Division='', 
                     Supervisor='', AddTime='', LastLoginTime=None,
@@ -163,7 +189,7 @@ def updateCustomer(cursor, context, id, UserName='', UserPassword='', UserRole='
     cursor.execute(Query) 
     context.commit()                  
 
-def getCustomerExaminations(cursor, id):
+def getPatientExamination(cursor, id):
     cursor.execute("""
                     SELECT * 
                     FROM dbo.tblStudies 
@@ -172,70 +198,82 @@ def getCustomerExaminations(cursor, id):
                     .format(id))
     return cursor.fetchone()
 
-def getLastNotNullCustomerYawLeftExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientYawLeftExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND YawLeft IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def getLastNotNullCustomerYawRightExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientYawRightExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND YawRight IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def getLastNotNullCustomerPitchDownExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientPitchDownExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND PitchDown IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def getLastNotNullCustomerPitchUpExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientPitchUpExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND PitchUp IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def getLastNotNullCustomerRollLeftExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientRollLeftExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND RollLeft IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def getLastNotNullCustomerRollRightExamination(cursor, id):
-    cursor.execute("""
+def getLastNotNullPatientRollRightExamination(cursor, id):
+    rows_count = cursor.execute("""
                 SELECT TOP 1 * 
                 FROM dbo.tblStudies 
                 WHERE PatientID = '{}' AND RollRight IS NOT NULL
                 ORDER BY StudyDate DESC
                 """
                 .format(id))
+    if(rows_count == 0):
+        return None
     return cursor.fetchone()
 
-def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.datetime.now(),Disease='',StudyResult='', StudyWay='',
-                StudyNotes='',Drugs='',PatientID='NULL', PatientAge='NULL',Doctor='',Price='NULL',
-                Device='', Method='', System='', StudyFile='', Department='',
-                Complaints='', RiskFactors='', 
+def insertExamination(cursor, context, Study='Местное обследование',StudyType='Голова',StudyDate=datetime.datetime.now(),Disease='',StudyResult='', StudyWay='Стандартная',
+                StudyNotes='Нет',Drugs='Нет',PatientID='NULL', PatientAge='NULL',Doctor='',Price='NULL',
+                Device='Система реаблитации КНУ', Method='Дигностика', System='RS', StudyFile='', Department='КНУ',
+                Complaints='Нет', RiskFactors='Нет', 
                 PitchDown='NULL', PitchUp='NULL', 
                 YawLeft='NULL', YawRight='NULL',
                 RollLeft='NULL',RollRight='NULL',
@@ -248,53 +286,65 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                 YawLeftRotationDynamics='',YawRightRotationDynamics='',RollLeftRotationDynamics='',RollRightRotationDynamics='',PitchDownRotationDynamics='',PitchUpRotationDynamics=''):
     if(PatientID != ''):
         if(PitchDown != 'NULL'):
-            previousResult = getLastNotNullCustomerPitchDownExamination(cursor, PatientID)[20]
-            if(int(previousResult) > int(PitchDown)):
-                PitchDownRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(PitchDown)):
-                PitchDownRotationDynamics = 'Stable'
-            else:
-                PitchDownRotationDynamics = 'Positive'
+            previousExamination = getLastNotNullPatientPitchDownExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[20]
+                if(int(previousResult) > int(PitchDown)):
+                    PitchDownRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(PitchDown)):
+                    PitchDownRotationDynamics = 'Без изменений'
+                else:
+                    PitchDownRotationDynamics = 'Позитивная'
         if(PitchUp != 'NULL'):
-            previousResult = getLastNotNullCustomerPitchUpExamination(cursor, PatientID)[21]
-            if(int(previousResult) > int(PitchUp)):
-                PitchUpRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(PitchUp)):
-                PitchUpRotationDynamics = 'Stable'
-            else:
-                PitchUpRotationDynamics = 'Positive'
+            previousExamination = getLastNotNullPatientPitchUpExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[21]
+                if(int(previousResult) > int(PitchUp)):
+                    PitchUpRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(PitchUp)):
+                    PitchUpRotationDynamics = 'Без изменений'
+                else:
+                    PitchUpRotationDynamics = 'Позитивная'
         if(RollLeft != 'NULL'):
-            previousResult = getLastNotNullCustomerRollLeftExamination(cursor, PatientID)[24]
-            if(int(previousResult) > int(RollLeft)):
-                RollLeftRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(RollLeft)):
-                RollLeftRotationDynamics = 'Stable'
-            else:
-                RollLeftRotationDynamics = 'Positive'
+            previousExamination = getLastNotNullPatientRollLeftExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[24]
+                if(int(previousResult) > int(RollLeft)):
+                    RollLeftRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(RollLeft)):
+                    RollLeftRotationDynamics = 'Без изменений'
+                else:
+                    RollLeftRotationDynamics = 'Позитивная'
         if(RollRight != 'NULL'):
-            previousResult = getLastNotNullCustomerRollRightExamination(cursor, PatientID)[25]
-            if(int(previousResult) > int(RollRight)):
-                RollRightRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(RollRight)):
-                RollRightRotationDynamics = 'Stable'
-            else:
-                RollRightRotationDynamics = 'Positive'  
+            previousExamination = getLastNotNullPatientRollRightExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[25]
+                if(int(previousResult) > int(RollRight)):
+                    RollRightRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(RollRight)):
+                    RollRightRotationDynamics = 'Без изменений'
+                else:
+                    RollRightRotationDynamics = 'Позитивная'  
         if(YawLeft != 'NULL'):
-            previousResult = getLastNotNullCustomerYawLeftExamination(cursor, PatientID)[22]
-            if(int(previousResult) > int(YawLeft)):
-                YawLeftRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(YawLeft)):
-                YawLeftRotationDynamics = 'Stable'
-            else:
-                YawLeftRotationDynamics = 'Positive'
+            previousExamination = getLastNotNullPatientYawLeftExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[22]
+                if(int(previousResult) > int(YawLeft)):
+                    YawLeftRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(YawLeft)):
+                    YawLeftRotationDynamics = 'Без изменений'
+                else:
+                    YawLeftRotationDynamics = 'Позитивная'
         if(YawRight != 'NULL'):
-            previousResult = getLastNotNullCustomerYawRightExamination(cursor, PatientID)[23]
-            if(int(previousResult) > int(YawRight)):
-                YawRightRotationDynamics = 'Negative'
-            elif(int(previousResult) == int(YawRight)):
-                YawRightRotationDynamics = 'Stable'
-            else:
-                YawRightRotationDynamics = 'Positive'
+            previousExamination = getLastNotNullPatientYawRightExamination(cursor, PatientID)
+            if(previousExamination != None):
+                previousResult = previousExamination[23]
+                if(int(previousResult) > int(YawRight)):
+                    YawRightRotationDynamics = 'Негативная'
+                elif(int(previousResult) == int(YawRight)):
+                    YawRightRotationDynamics = 'Без изменений'
+                else:
+                    YawRightRotationDynamics = 'Позитивная'
 
     query='''
                     INSERT 
@@ -303,6 +353,7 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                         Study, 
                         StudyType, 
                         StudyDate, 
+                        StudyWay,
                         Disease,  
                         StudyResult, 
                         StudyNotes, 
@@ -356,7 +407,7 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                         PitchUpRotationDynamics
                         ) 
                         VALUES
-                        ('{}','{}','{}','{}','{}','{}','{}',{},{},'{}',{},'{}','{}','{}','{}','{}',
+                        ('{}','{}','{}','{}','{}','{}','{}','{}',{},{},'{}',{},'{}','{}','{}','{}','{}',
                         '{}','{}',{}, {}, {}, {}, {}, {}, 
                         {},'{}','{}','{}',
                         {},'{}','{}','{}',
@@ -366,7 +417,7 @@ def insertExamination(cursor, context, Study='',StudyType='',StudyDate=datetime.
                         {},'{}','{}','{}',
                         '{}','{}','{}','{}','{}','{}')
                         '''.format(
-                    Study,StudyType,StudyDate.strftime("%Y-%m-%d %H:%M:%S"),Disease,
+                    Study,StudyType,StudyDate.strftime("%Y-%m-%d %H:%M:%S"),StudyWay,Disease,
                     StudyResult,StudyNotes,Drugs,
                     PatientID,PatientAge,Doctor,Price,Device,Method,
                     System,StudyFile,Department,Complaints,RiskFactors,
