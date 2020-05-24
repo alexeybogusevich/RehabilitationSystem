@@ -6,7 +6,7 @@
 #
 #
 
-from visuals.visitems.visitem import VisualItem
+from .visitem import VisualItem
 
 import numpy as np
 import OpenGL.GL as gl
@@ -14,7 +14,6 @@ import OpenGL.arrays.vbo as glvbo
 
 
 class SurfaceVisItem(VisualItem):
-
     def __init__(self, points, triangles, normals, cull_back=True, is_ccw=False):
         super(SurfaceVisItem, self).__init__()
         self.vbo_points = None
@@ -72,7 +71,7 @@ class SurfaceVisItem(VisualItem):
         # # self.gl.glMaterialfv(gl.GL_FRONT, gl.GL_AMBIENT, (0.1, 0.1, 0.1, 1.0))
         #
         # gl.glLightfv(gl.GL_LIGHT0, gl.GL_POSITION, (0.0, 0.0, -100.0, 1.0))
-        #gl.glShadeModel(gl.GL_SMOOTH)
+        # gl.glShadeModel(gl.GL_SMOOTH)
 
         gl.glRotatef(self.angle_x, 1.0, 0.0, 0.0)
         gl.glRotatef(self.angle_y, 0.0, 1.0, 0.0)
@@ -88,10 +87,12 @@ class SurfaceVisItem(VisualItem):
         gl.glNormalPointer(gl.GL_FLOAT, 0, self.vbo_normals)
 
         gl.glLineWidth(0.5)
-        #gl.glColor4f(1.0, 0.1, 0.1, 1.0)
-        #gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
+        # gl.glColor4f(1.0, 0.1, 0.1, 1.0)
+        # gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
         gl.glColor4f(0.5, 0.5, 0.5, 1.0)
-        gl.glDrawElements(gl.GL_TRIANGLES, 3 * len(self.triangles), gl.GL_UNSIGNED_INT, None)
+        gl.glDrawElements(
+            gl.GL_TRIANGLES, 3 * len(self.triangles), gl.GL_UNSIGNED_INT, None
+        )
 
         # gl.glPointSize(5.0)
         # gl.glDrawElements(gl.GL_POINTS, len(self.points), gl.GL_UNSIGNED_INT, None)
@@ -123,4 +124,4 @@ class SurfaceVisItem(VisualItem):
 
     def setPoints(self, points):
         self.vbo_points.set_array(points, points.nbytes)
-        #print(points.min(axis=0), points.max(axis=0))
+        # print(points.min(axis=0), points.max(axis=0))

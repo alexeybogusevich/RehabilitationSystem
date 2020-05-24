@@ -7,7 +7,6 @@ import numpy as np
 
 
 class Angle(object):
-
     def __init__(self):
         self.points = None
         self._yaw = 0.0
@@ -18,7 +17,7 @@ class Angle(object):
         self.points = points
         rotate_skul = np.array([0.0, 0.0, 0.0])
         for i in range(7):
-            rotate_skul += (self.points[i] - self.points[16 - i])
+            rotate_skul += self.points[i] - self.points[16 - i]
         rotate_skul /= np.linalg.norm(rotate_skul)
 
         self._yaw = self.__yaw_angle(-rotate_skul)
@@ -40,11 +39,14 @@ class Angle(object):
         return self._roll
 
     def __eye_normal(self, start_i, end_i, return_center=False):
-        center = self.points[start_i:(end_i+1)].mean(axis=0)
+        center = self.points[start_i : (end_i + 1)].mean(axis=0)
         norm = np.array([0.0, 0.0, 0.0], dtype=np.float32)
         for i in range(6):
             ni = (i + 1) % 6
-            v1, v2 = self.points[start_i + i] - center, self.points[start_i + ni] - center
+            v1, v2 = (
+                self.points[start_i + i] - center,
+                self.points[start_i + ni] - center,
+            )
             v1 /= np.linalg.norm(v1)
             v2 /= np.linalg.norm(v2)
             vn = np.cross(v1, v2)

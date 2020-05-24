@@ -3,21 +3,19 @@
 #  Created by Dmytro Kotsur on 10/21/19, 12:02 AM.
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 
-from intro_ui import Ui_Form
+from .intro_ui import Ui_Form
 from PyQt5 import QtWidgets, QtGui
-from mainwindow import MainWindow
+from .mainwindow import MainWindow
+
 
 class LoginWidget(QtWidgets.QWidget):
     def __init__(self):
         super(IntroWidget, self).__init__()
 
         self.ui = Ui_Form()
-        
-
 
 
 class IntroWidget(QtWidgets.QWidget):
-
     def __init__(self):
         super(IntroWidget, self).__init__()
 
@@ -28,7 +26,6 @@ class IntroWidget(QtWidgets.QWidget):
         self.ui.toolButtonFile.clicked.connect(self.runFromFile)
 
     def runWebCam(self):
-
         class Arg(object):
             input = 0
             no3d = not self.ui.toolButton.isChecked()
@@ -41,10 +38,13 @@ class IntroWidget(QtWidgets.QWidget):
         self.setVisible(False)
 
     def runFromFile(self):
-        filename, ext = QtWidgets.QFileDialog.getOpenFileName(self, "Open video file...", ".", "Video (*.avi *.mp4)")
+        filename, ext = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Open video file...", ".", "Video (*.avi *.mp4)"
+        )
         if filename == "" or filename is None:
             return
         else:
+
             class Arg(object):
                 input = str(filename)
                 no3d = not self.ui.toolButton.isChecked()
@@ -65,6 +65,7 @@ class IntroWidget(QtWidgets.QWidget):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     widget = IntroWidget()
     widget.show()

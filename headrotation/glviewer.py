@@ -7,12 +7,11 @@
 import OpenGL.GL as gl
 from PyQt5 import QtWidgets
 
-from visuals.camera import CameraOrtho2D
-from visuals.visitems import visitem
+from .visuals.camera import CameraOrtho2D
+from .visuals.visitems import visitem
 
 
 class GLViewer(QtWidgets.QOpenGLWidget):
-
     def __init__(self, versionprofile=None, parent=None):
         super(GLViewer, self).__init__(parent)
         self.__profile = versionprofile
@@ -46,7 +45,11 @@ class GLViewer(QtWidgets.QOpenGLWidget):
         """
         print("> [INFO]:")
         print(">  1) OpenGL Version: " + str(gl.glGetString(gl.GL_VERSION)))
-        print(">  2) GLSL Version: " + str(gl.glGetString(gl.GL_SHADING_LANGUAGE_VERSION)) + "\n")
+        print(
+            ">  2) GLSL Version: "
+            + str(gl.glGetString(gl.GL_SHADING_LANGUAGE_VERSION))
+            + "\n"
+        )
 
         # Set initialization flag
         self.gl = True  # self.context().versionFunctions(self.__profile)
@@ -116,6 +119,3 @@ class GLViewer(QtWidgets.QOpenGLWidget):
 
     def resizeGL(self, width, height):
         self.__camera.setup(width, height)
-
-
-

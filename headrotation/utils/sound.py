@@ -8,11 +8,14 @@ from PyQt5 import QtCore
 
 
 class SoundPlayer(QtCore.QThread):
-
     def __init__(self):
         super(SoundPlayer, self).__init__()
-        self.url = QtCore.QUrl.fromLocalFile("/Users/dkotsur/Projects/KNU/MUAE-HealthCare/data/sounds/finish.wav")
-        self.sound = QtMultimedia.QSound("/Users/dkotsur/Projects/KNU/MUAE-HealthCare/data/sounds/finish.wav")
+        self.url = QtCore.QUrl.fromLocalFile(
+            "/Users/dkotsur/Projects/KNU/MUAE-HealthCare/data/sounds/finish.wav"
+        )
+        self.sound = QtMultimedia.QSound(
+            "/Users/dkotsur/Projects/KNU/MUAE-HealthCare/data/sounds/finish.wav"
+        )
 
     def __del__(self):
         self.wait()

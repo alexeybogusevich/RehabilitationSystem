@@ -21,9 +21,8 @@ from PyQt5 import QtCore
 
 
 class CameraOrtho2D:
-
     def __init__(self, origin_x=0.0, origin_y=0.0, scale=1.0):
-        #self.gl = gl_context
+        # self.gl = gl_context
         self.origin_x = -origin_x
         self.origin_y = -origin_y
         self.scale = scale
@@ -39,8 +38,8 @@ class CameraOrtho2D:
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
         aspect_ratio = float(self.width) / float(self.height)
-        #gl.glOrtho(-aspect_ratio, aspect_ratio, 1.0, -1.0, -1000, 1000)
-        #gl.glFrustum(-aspect_ratio, aspect_ratio, -1.0, 1.0, 1.0, 100) # 720, 1280
+        # gl.glOrtho(-aspect_ratio, aspect_ratio, 1.0, -1.0, -1000, 1000)
+        # gl.glFrustum(-aspect_ratio, aspect_ratio, -1.0, 1.0, 1.0, 100) # 720, 1280
         gl.glFrustum(-aspect_ratio, aspect_ratio, 0.0, 1.0, 1.0, 1000)
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glLoadIdentity()
@@ -58,7 +57,6 @@ class CameraOrtho2D:
         gl.glTranslate(self.origin_x, self.origin_y, -300.0)
         # gl.glRotate(self.angle * 50, self.axis[0], self.axis[1], self.axis[2])
 
-
     def fitInRect(self, width, height):
         ar1 = float(self.width) / float(self.height)
         ar2 = float(width) / float(height)
@@ -70,4 +68,3 @@ class CameraOrtho2D:
 
         self.origin_x = -0.5 * width
         self.origin_y = -0.5 * height
-

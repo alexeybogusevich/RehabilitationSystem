@@ -16,11 +16,10 @@
 import OpenGL.GL as gl
 import numpy as np
 
-import visitem
+from .visitem import *
 
 
 class ImageVisItem(visitem.VisualItem):
-
     def __init__(self, image=None, x=0, y=0):
         visitem.VisualItem.__init__(self)
         self.x = x
@@ -49,8 +48,17 @@ class ImageVisItem(visitem.VisualItem):
         gl.glTexParameter(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
 
         if self.img_data is not None:
-            gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGB, self.width, self.height,
-                            0, gl.GL_RGB, gl.GL_FLOAT, self.img_data)
+            gl.glTexImage2D(
+                gl.GL_TEXTURE_2D,
+                0,
+                gl.GL_RGB,
+                self.width,
+                self.height,
+                0,
+                gl.GL_RGB,
+                gl.GL_FLOAT,
+                self.img_data,
+            )
 
         gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
 
@@ -68,7 +76,10 @@ class ImageVisItem(visitem.VisualItem):
         gl.glTexEnvi(gl.GL_TEXTURE_ENV, gl.GL_TEXTURE_ENV_MODE, gl.GL_DECAL)
         gl.glEnable(gl.GL_TEXTURE_2D)
         gl.glBindTexture(gl.GL_TEXTURE_2D, self.texture)
-        arr_points = np.array([[0, 0], [self.width, 0], [self.width, self.height], [0, self.height]], np.float)
+        arr_points = np.array(
+            [[0, 0], [self.width, 0], [self.width, self.height], [0, self.height]],
+            np.float,
+        )
         arr_texture = np.array([[0, 0], [1, 0], [1, 1], [0, 1]], np.float)
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
         gl.glVertexPointer(2, gl.GL_FLOAT, 0, arr_points)

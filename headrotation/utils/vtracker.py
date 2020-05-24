@@ -28,13 +28,3 @@ class VTracker(QtCore.QObject):
         elif self.initialized and np.abs(self.track_value - value) > self.reset_eps:
             self.initialized = False
             self.maximum_found.emit(self.track_value)
-
-
-
-
-
-
-
-
-
-

@@ -12,7 +12,6 @@ import OpenGL.arrays.vbo as glvbo
 
 
 class KPVisItem(VisualItem):
-
     def __init__(self, points):
         super(KPVisItem, self).__init__()
         self.mouse_is_pressed = False
@@ -33,7 +32,7 @@ class KPVisItem(VisualItem):
         # gl.glEnable(gl.GL_DEPTH_TEST)
         # gl.glDepthFunc(gl.GL_LESS)
         #
-        #gl.glEnable(gl.GL_CULL_FACE)
+        # gl.glEnable(gl.GL_CULL_FACE)
         gl.glCullFace(gl.GL_FRONT)
         gl.glFrontFace(gl.GL_CCW)
         #
@@ -44,17 +43,17 @@ class KPVisItem(VisualItem):
 
         gl.glPushMatrix()
         gl.glMatrixMode(gl.GL_MODELVIEW)
-        #gl.glLoadIdentity()
+        # gl.glLoadIdentity()
         gl.glColor3f(1.0, 0.0, 0.0)
         gl.glPointSize(10.0)
 
         gl.glBegin(gl.GL_POINTS)
         for i, cid in enumerate(self.c):
             gl.glVertex3f(self.points[i][0], self.points[i][1], self.points[i][2])
-            #gl.glTranslatef(self.points[i][0], self.points[i][1], self.points[i][2])
-            #cid = glu.gluNewQuadric()
-            #gl.glTranslatef(self.points[i][0], self.points[i][1], self.points[i][2])
-            #glu.gluSphere(cid, 5.0, 20, 20)
+            # gl.glTranslatef(self.points[i][0], self.points[i][1], self.points[i][2])
+            # cid = glu.gluNewQuadric()
+            # gl.glTranslatef(self.points[i][0], self.points[i][1], self.points[i][2])
+            # glu.gluSphere(cid, 5.0, 20, 20)
         gl.glEnd()
         gl.glPopMatrix()
         gl.glPopAttrib()

@@ -4,16 +4,17 @@
 #  Copyright (c) 2019 Dmytro Kotsur. All rights reserved.
 
 import sys
-sys.path.append("..")
+
+# sys.path.append("..")
 import cv2
 import dlib
 import torch
 import numpy as np
 import torchvision.transforms as transforms
-from ReabilitationSystem.lib3DDFA.utils.ddfa import ToTensorGjz, NormalizeGjz
-from ReabilitationSystem.lib3DDFA import mobilenet_v1
+from lib3DDFA.utils.ddfa import ToTensorGjz, NormalizeGjz
+from lib3DDFA import mobilenet_v1
 
-from ReabilitationSystem.lib3DDFA.utils.inference import (
+from lib3DDFA.utils.inference import (
     parse_roi_box_from_landmark,
     crop_img,
     predict_68pts,
@@ -23,14 +24,18 @@ from ReabilitationSystem.lib3DDFA.utils.inference import (
 
 class FaceDetector(object):
 
-    #FACEDETECTOR_MODEL_FILE = r"../data/models/opencv_dnn_face_detector/opencv_face_detector_uint8.pb"
+    # FACEDETECTOR_MODEL_FILE = r"../data/models/opencv_dnn_face_detector/opencv_face_detector_uint8.pb"
     FACEDETECTOR_MODEL_FILE = "C:/Alex/ReabilitationSystem/data/models/opencv_dnn_face_detector/opencv_face_detector_uint8.pb"
-    #FACEDETECTOR_CONFIG_FILE = r"../data/models/opencv_dnn_face_detector/opencv_face_detector.pbtxt"
+    # FACEDETECTOR_CONFIG_FILE = r"../data/models/opencv_dnn_face_detector/opencv_face_detector.pbtxt"
     FACEDETECTOR_CONFIG_FILE = "C:/Alex/ReabilitationSystem/data/models/opencv_dnn_face_detector/opencv_face_detector.pbtxt"
-    #LANDMARK_MODEL_FILE = r"../lib3DDFA/models/shape_predictor_68_face_landmarks.dat"
-    LANDMARK_MODEL_FILE = "C:/Alex/ReabilitationSystem/data/models/shape_predictor_68_face_landmarks.dat"
-    #LANDMARK_3DMODEL_FILE = r"../lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
-    LANDMARK_3DMODEL_FILE = "C:/Alex/ReabilitationSystem/lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
+    # LANDMARK_MODEL_FILE = r"../lib3DDFA/models/shape_predictor_68_face_landmarks.dat"
+    LANDMARK_MODEL_FILE = (
+        "C:/Alex/ReabilitationSystem/data/models/shape_predictor_68_face_landmarks.dat"
+    )
+    # LANDMARK_3DMODEL_FILE = r"../lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
+    LANDMARK_3DMODEL_FILE = (
+        "C:/Alex/ReabilitationSystem/lib3DDFA/models/phase1_wpdc_vdc.pth.tar"
+    )
 
     def __init__(self):
         self._init_models()
@@ -39,21 +44,29 @@ class FaceDetector(object):
         """
         Initialize models
         """
-        self.transform = transforms.Compose([ToTensorGjz(), NormalizeGjz(mean=127.5, std=128)])
+        self.transform = transforms.Compose(
+            [ToTensorGjz(), NormalizeGjz(mean=127.5, std=128)]
+        )
 
-        checkpoint = torch.load(FaceDetector.LANDMARK_3DMODEL_FILE, map_location=lambda storage, loc: storage)['state_dict']
-        self.model = getattr(mobilenet_v1, 'mobilenet_1')(num_classes=62)  # 62 = 12(pose) + 40(shape) +10(expression)
+        checkpoint = torch.load(
+            FaceDetector.LANDMARK_3DMODEL_FILE,
+            map_location=lambda storage, loc: storage,
+        )["state_dict"]
+        self.model = getattr(mobilenet_v1, "mobilenet_1")(
+            num_classes=62
+        )  # 62 = 12(pose) + 40(shape) +10(expression)
 
         model_dict = self.model.state_dict()
         # because the model is trained by multiple gpus, prefix module should be removed
         for k in checkpoint.keys():
-            model_dict[k.replace('module.', '')] = checkpoint[k]
+            model_dict[k.replace("module.", "")] = checkpoint[k]
         self.model.load_state_dict(model_dict)
         self.model.eval()
 
         self.face_regressor = dlib.shape_predictor(FaceDetector.LANDMARK_MODEL_FILE)
-        self.net = cv2.dnn.readNetFromTensorflow(FaceDetector.FACEDETECTOR_MODEL_FILE,
-                                                 FaceDetector.FACEDETECTOR_CONFIG_FILE)
+        self.net = cv2.dnn.readNetFromTensorflow(
+            FaceDetector.FACEDETECTOR_MODEL_FILE, FaceDetector.FACEDETECTOR_CONFIG_FILE
+        )
 
         self.landmark_pts = None
 
@@ -61,7 +74,9 @@ class FaceDetector(object):
         """
         Detect human faces on single frame
         """
-        blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), [104, 117, 123], False, False)
+        blob = cv2.dnn.blobFromImage(
+            frame, 1.0, (300, 300), [104, 117, 123], False, False
+        )
         self.net.setInput(blob)
         detections = self.net.forward()
         rects = []

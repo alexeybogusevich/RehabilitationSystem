@@ -14,7 +14,6 @@
 
 
 class VisualItem(object):
-
     def __init__(self):
         self.viewer = None
         self.visible = True
@@ -32,6 +31,7 @@ class VisualItem(object):
 
     def setInternalDistanceThreshold(self, threshold):
         self._internal_distance_threshold = threshold
+
     #
     # Mouse events
     #

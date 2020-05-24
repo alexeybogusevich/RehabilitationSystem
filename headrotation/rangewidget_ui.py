@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Range(object):
     def setupUi(self, Range):
         Range.setObjectName("Range")
@@ -15,7 +16,9 @@ class Ui_Range(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Range)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        spacerItem = QtWidgets.QSpacerItem(20, 1, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 1, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setSpacing(1)
@@ -37,18 +40,24 @@ class Ui_Range(object):
         self.label_12 = QtWidgets.QLabel(Range)
         self.label_12.setMinimumSize(QtCore.QSize(38, 0))
         self.label_12.setMaximumSize(QtCore.QSize(38, 16777215))
-        self.label_12.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_12.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_12.setObjectName("label_12")
         self.gridLayout.addWidget(self.label_12, 1, 0, 1, 1)
         self.label_10 = QtWidgets.QLabel(Range)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
         self.label_10.setSizePolicy(sizePolicy)
         self.label_10.setMinimumSize(QtCore.QSize(38, 0))
         self.label_10.setMaximumSize(QtCore.QSize(38, 16777215))
-        self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_10.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_10.setObjectName("label_10")
         self.gridLayout.addWidget(self.label_10, 0, 0, 1, 1)
         self.labelLAvg = QtWidgets.QLabel(Range)
@@ -61,7 +70,9 @@ class Ui_Range(object):
         self.label_14 = QtWidgets.QLabel(Range)
         self.label_14.setMinimumSize(QtCore.QSize(38, 0))
         self.label_14.setMaximumSize(QtCore.QSize(38, 16777215))
-        self.label_14.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_14.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_14.setObjectName("label_14")
         self.gridLayout.addWidget(self.label_14, 2, 0, 1, 1)
         self.labelLMin = QtWidgets.QLabel(Range)
@@ -88,7 +99,9 @@ class Ui_Range(object):
         self.label_16 = QtWidgets.QLabel(Range)
         self.label_16.setMinimumSize(QtCore.QSize(38, 0))
         self.label_16.setMaximumSize(QtCore.QSize(38, 16777215))
-        self.label_16.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_16.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.label_16.setObjectName("label_16")
         self.gridLayout.addWidget(self.label_16, 3, 0, 1, 1)
         self.labelLNum = QtWidgets.QLabel(Range)
@@ -106,7 +119,9 @@ class Ui_Range(object):
         self.labelRNum.setObjectName("labelRNum")
         self.gridLayout.addWidget(self.labelRNum, 3, 2, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(Range)
@@ -121,10 +136,11 @@ class Ui_Range(object):
         self.label_10.setText(_translate("Range", "мін."))
         self.labelLAvg.setText(_translate("Range", "0°"))
         self.label_14.setText(_translate("Range", "сер."))
-        self.labelLMin.setText(_translate("Range", "<html><head/><body><p>0°</p></body></html>"))
+        self.labelLMin.setText(
+            _translate("Range", "<html><head/><body><p>0°</p></body></html>")
+        )
         self.labelLMax.setText(_translate("Range", "0°"))
         self.labelRMin.setText(_translate("Range", "0°"))
         self.label_16.setText(_translate("Range", "повт."))
         self.labelLNum.setText(_translate("Range", "0"))
         self.labelRNum.setText(_translate("Range", "0"))
-

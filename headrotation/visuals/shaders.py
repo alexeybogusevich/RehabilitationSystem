@@ -23,7 +23,7 @@ def compile_vertex_shader(source):
     gl.glCompileShader(vertex_shader)
     # check compilation error
     result = gl.glGetShaderiv(vertex_shader, gl.GL_COMPILE_STATUS)
-    if not(result):
+    if not (result):
         raise RuntimeError(gl.glGetShaderInfoLog(vertex_shader))
     return vertex_shader
 
@@ -35,7 +35,7 @@ def compile_fragment_shader(source):
     gl.glCompileShader(fragment_shader)
     # check compilation error
     result = gl.glGetShaderiv(fragment_shader, gl.GL_COMPILE_STATUS)
-    if not(result):
+    if not (result):
         raise RuntimeError(gl.glGetShaderInfoLog(fragment_shader))
     return fragment_shader
 
@@ -48,8 +48,6 @@ def link_shader_program(vertex_shader, fragment_shader):
     gl.glLinkProgram(program)
     # check linking error
     result = gl.glGetProgramiv(program, gl.GL_LINK_STATUS)
-    if not(result):
+    if not (result):
         raise RuntimeError(gl.glGetProgramInfoLog(program))
     return program
-
-

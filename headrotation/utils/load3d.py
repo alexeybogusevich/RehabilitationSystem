@@ -14,5 +14,3 @@ def load3d_obj(filename):
     triangles = mesh.faces.astype(np.uint32)
     normals = mesh.vertex_normals.astype(np.float32)
     return points, triangles, normals
-
-

@@ -1,0 +1,26 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+argparse = "*"
+trimesh = "*"
+pandas = "*"
+openpyxl = "*"
+torch = ">=0.4.1"
+torchvision = ">=0.2.1"
+numpy = ">=1.15.4"
+scipy = ">=1.1.0"
+matplotlib = "==3.0.2"
+dlib = "==19.5.0"
+opencv-python = ">=3.4.3.18"
+PyOpenGL = "*"
+PyQt5 = "*"
+pyodbc = "*"
+python-dotenv = "*"
+
+[requires]
+python_version = "3.8"

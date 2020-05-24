@@ -5,7 +5,7 @@
 #
 #
 
-from visuals.visitems.visitem import VisualItem
+from .visitem import VisualItem
 
 import numpy as np
 import OpenGL.GL as gl
@@ -13,7 +13,6 @@ import OpenGL.arrays.vbo as glvbo
 
 
 class ToyVisItem(VisualItem):
-
     def __init__(self, points):
         super(ToyVisItem, self).__init__()
         self.vbo = None
@@ -22,7 +21,7 @@ class ToyVisItem(VisualItem):
 
     def initGL(self):
         self.vbo = glvbo.VBO(self.points, usage=gl.GL_STATIC_DRAW)
-        #self.vbo_control_points = glvbo.VBO(self.creator.get_curve_points(), usage=gl.GL_DYNAMIC_DRAW)
+        # self.vbo_control_points = glvbo.VBO(self.creator.get_curve_points(), usage=gl.GL_DYNAMIC_DRAW)
 
     def drawGL(self):
         gl.glPushAttrib(gl.GL_CURRENT_BIT)
@@ -54,7 +53,7 @@ class ToyVisItem(VisualItem):
 
     def mousePressed(self, x, y, button):
         self.mouse_is_pressed = True
-        #self.creator.add_control_point(x, y)
+        # self.creator.add_control_point(x, y)
         # self.updateGLBuffers()
 
     def mouseMoved(self, x, y, button):
