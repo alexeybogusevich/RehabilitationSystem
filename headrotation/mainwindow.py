@@ -137,10 +137,10 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Yaw maxima:", value)
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        #self.stat_records.saveRaw("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".txt")
+        self.stat_records.saveRaw("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".txt")
         #self.stat_records.saveExcel("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".xlsx")
         self.stat_records.writeToDb()
-        self.stat_records.generateReport()
+        self.stat_records.generateReport("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".pdf")
 
     def processSourceFrame(self):
         success, frame = self.vc.read()

@@ -86,16 +86,15 @@ class StatRecords(QtCore.QObject):
         cursor.close()
         del cursor
 
-    def generateReport(self):
-        max_yaw_l = self.stat(self.yaw_l)[1]
-        max_yaw_r = self.stat(self.yaw_r)[1]
-        max_roll_l = self.stat(self.roll_l)[1]
-        max_roll_r = self.stat(self.roll_r)[1]
-        max_pitch_l = self.stat(self.pitch_l)[1]
-        max_pitch_r = self.stat(self.pitch_r)[1]
+    def generateReport(self, file_path):
+        max_yaw_l = list(self.stat(self.yaw_l))[1]
+        max_yaw_r = list(self.stat(self.yaw_r))[1]
+        max_roll_l = list(self.stat(self.roll_l))[1]
+        max_roll_r = list(self.stat(self.roll_r))[1]
+        max_pitch_l = list(self.stat(self.pitch_l))[1]
+        max_pitch_r = list(self.stat(self.pitch_r))[1]
         root = tk.Tk()
         root.withdraw()
-        file_path = filedialog.asksaveasfilename(filetypes=("PDF files","*.pdf"))
         context = connectToDb()
         cursor = context.cursor()
         pId = self.patientId
