@@ -17,7 +17,7 @@ def connectToDb():
 
 
 def getUserById(cursor, id):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblUsers 
@@ -26,11 +26,13 @@ def getUserById(cursor, id):
             id
         )
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchone()
 
 
 def getPatientById(cursor, id):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblMain 
@@ -39,11 +41,13 @@ def getPatientById(cursor, id):
             id
         )
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchone()
 
 
 def getUserByName(cursor, UserName):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblUsers 
@@ -52,11 +56,13 @@ def getUserByName(cursor, UserName):
             UserName
         )
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchone()
 
 
 def getPatientByName(cursor, name):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblMain 
@@ -65,36 +71,44 @@ def getPatientByName(cursor, name):
             name
         )
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchone()
 
 
 def getAllUsers(cursor):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblUsers 
                     """
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchall()
 
 
 def getAllPatients(cursor):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblMain 
                     """
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchall()
 
 
 def getAllStudies(cursor):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblStudies 
                     """
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchall()
 
 
@@ -305,7 +319,7 @@ def updateUser(
 
 
 def getPatientExamination(cursor, id):
-    cursor.execute(
+    rows_count = cursor.execute(
         """
                     SELECT * 
                     FROM dbo.tblStudies 
@@ -314,6 +328,8 @@ def getPatientExamination(cursor, id):
             id
         )
     )
+    if rows_count == 0:
+        return None
     return cursor.fetchone()
 
 

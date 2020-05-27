@@ -24,10 +24,17 @@ from utils.vtracker import VTracker
 from utils.stat import StatRecords
 from scipy.spatial import Delaunay
 
-
 DOWNSAMPLE = 2
 TEXTSCALE = 1.5 / DOWNSAMPLE
 
+class InputWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+
+    def showDialog(self, label):
+        text, ok = QtWidgets.QInputDialog.getText(self, 'Db Info', label)
+        if ok:
+            return str(text)
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, args, parent=None):
@@ -139,8 +146,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.stat_records.saveRaw("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".txt")
         #self.stat_records.saveExcel("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".xlsx")
-        self.stat_records.writeToDb()
-        self.stat_records.generateReport("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".pdf")
+        input = InputWidget()
+        patientId = int(input.showDialog('Enter Patient\'s ID'))
+        doctorId = int(input.showDialog('Enter Doctor\'s ID'))
+        self.stat_records.writeToDb(_pId=patientId, _dId=doctorId)
+        self.stat_records.generateReport("C:/Alex/ReabilitationSystem//output/" + self.output_filename + ".pdf",_pID=patientId)
 
     def processSourceFrame(self):
         success, frame = self.vc.read()

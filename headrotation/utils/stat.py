@@ -20,7 +20,6 @@ class StatRecords(QtCore.QObject):
 
     def __init__(self, parent=None):
         super(StatRecords, self).__init__(parent)
-        self.patientId = 2
         self.yaw_l = []
         self.yaw_r = []
         self.pitch_l = []
@@ -67,26 +66,31 @@ class StatRecords(QtCore.QObject):
             fout.write("Roll_Left, " + ", ".join(map(str, self.roll_l)) + "\n")
             fout.write("Roll_Right, " + ", ".join(map(str, self.roll_r)) + "\n")
 
-    def writeToDb(self):
-        max_yaw_l = self.stat(self.yaw_l)[1]
-        max_yaw_r = self.stat(self.yaw_r)[1]
-        max_roll_l = self.stat(self.roll_l)[1]
-        max_roll_r = self.stat(self.roll_r)[1]
-        max_pitch_l = self.stat(self.pitch_l)[1]
-        max_pitch_r = self.stat(self.pitch_r)[1]
+    def writeToDb(self, _pId, _dId):
+        max_yaw_l = abs(self.stat(self.yaw_l)[1])
+        max_yaw_r = abs(self.stat(self.yaw_r)[1])
+        max_roll_l = abs(self.stat(self.roll_l)[1])
+        max_roll_r = abs(self.stat(self.roll_r)[1])
+        max_pitch_l = abs(self.stat(self.pitch_l)[1])
+        max_pitch_r = abs(self.stat(self.pitch_r)[1])
         
         context = connectToDb()
         cursor = context.cursor()
 
+        userFullName = ''
+        user = getUserById(cursor,_dId)
+        if(user != None):
+            userFullName = user[4]
+
         insertExamination(
-        cursor,context, PatientID=self.patientId,
+        cursor,context, PatientID=_pId, Doctor=userFullName,
         YawLeft=max_yaw_l,YawRight=max_yaw_r, 
         RollLeft=max_roll_r, RollRight=max_roll_r,
         PitchDown=max_pitch_l, PitchUp=max_pitch_r)
         cursor.close()
         del cursor
 
-    def generateReport(self, file_path):
+    def generateReport(self, file_path, _pID):
         max_yaw_l = abs(int(round(list(self.stat(self.yaw_l))[1])))
         max_yaw_r = abs(int(round(list(self.stat(self.yaw_r))[1])))
         max_roll_l = abs(int(round(list(self.stat(self.roll_l))[1])))
@@ -97,7 +101,7 @@ class StatRecords(QtCore.QObject):
         root.withdraw()
         context = connectToDb()
         cursor = context.cursor()
-        pId = self.patientId
+        pId = _pID
         patient = getPatientById(cursor,id=pId)
         create_report(
         output_file = file_path,
