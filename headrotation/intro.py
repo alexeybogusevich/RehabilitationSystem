@@ -7,7 +7,6 @@ from intro_ui import Ui_Form
 from PyQt5 import QtWidgets, QtGui
 from mainwindow import MainWindow
 
-
 class LoginWidget(QtWidgets.QWidget):
     def __init__(self):
         super(IntroWidget, self).__init__()

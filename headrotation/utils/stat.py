@@ -87,19 +87,19 @@ class StatRecords(QtCore.QObject):
         del cursor
 
     def generateReport(self, file_path):
-        max_yaw_l = list(self.stat(self.yaw_l))[1]
-        max_yaw_r = list(self.stat(self.yaw_r))[1]
-        max_roll_l = list(self.stat(self.roll_l))[1]
-        max_roll_r = list(self.stat(self.roll_r))[1]
-        max_pitch_l = list(self.stat(self.pitch_l))[1]
-        max_pitch_r = list(self.stat(self.pitch_r))[1]
+        max_yaw_l = abs(int(round(list(self.stat(self.yaw_l))[1])))
+        max_yaw_r = abs(int(round(list(self.stat(self.yaw_r))[1])))
+        max_roll_l = abs(int(round(list(self.stat(self.roll_l))[1])))
+        max_roll_r = abs(int(round(list(self.stat(self.roll_r))[1])))
+        max_pitch_l = abs(int(round(list(self.stat(self.pitch_l))[1])))
+        max_pitch_r = abs(int(round(list(self.stat(self.pitch_r))[1])))
         root = tk.Tk()
         root.withdraw()
         context = connectToDb()
         cursor = context.cursor()
         pId = self.patientId
-        patient = getPatientById(pId)
-        generator.create_report(
+        patient = getPatientById(cursor,id=pId)
+        create_report(
         output_file = file_path,
         _rollleft=max_roll_l,
         _rollright=max_roll_r,

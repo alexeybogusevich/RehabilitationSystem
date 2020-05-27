@@ -1,0 +1,6 @@
+Pitch_Left, 
+Pitch_Right, 49.972678130294014
+Yaw_Left, -81.68505525510213
+Yaw_Right, 
+Roll_Left, -42.8784897542601
+Roll_Right, 
